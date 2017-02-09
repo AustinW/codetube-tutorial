@@ -2,6 +2,7 @@
     <div>
         <p>{{ comments.length }} {{ comments.length | pluralize('comment') }}</p>
 
+        <!-- Video comment box -->
         <div class="video-comment clearfix" if="$root.user.authenticated">
             <textarea placeholder="Say something..." class="form-control video-comment__input" v-model="body"></textarea>
 
@@ -12,13 +13,18 @@
             </div>
         </div>
 
+        <!-- List of comments -->
         <ul class="media-list">
             <li class="media" v-for="comment in comments">
+
+                <!-- Channel image -->
                 <div class="media-left">
                     <a :href="channelUrl(comment)">
                         <img v-bind:src="comment.channel.data.image" :alt="comment.channel.data.name" class="media-object">
                     </a>
                 </div>
+
+                <!-- Comment -->
                 <div class="media-body">
                     <a :href="channelUrl(comment)">{{ comment.channel.data.name }}</a> {{ comment.created_at_human }}
 
@@ -26,8 +32,9 @@
 
                     <p>{{ comment.body }}</p>
 
-                    <ul class="list-inline">
-                        <li v-if="$root.user.authenticated">
+                    <!-- Comment reply/delete -->
+                    <ul class="list-inline" v-if="$root.user.authenticated">
+                        <li>
                             <a href="#" @click.prevent="toggleReplyForm(comment.id)">
                                 {{ replyFormVisible === comment.id ? 'Cancel reply' : 'Reply' }}
                             </a>
@@ -39,6 +46,7 @@
                         </li>
                     </ul>
 
+                    <!-- Reply box -->
                     <div class="video-comment clear" v-if="replyFormVisible === comment.id">
                         <textarea class="form-control video-comment__input" v-model="replyBody"></textarea>
                         <div class="pull-right" style="margin-top:10px">
@@ -48,17 +56,23 @@
                         </div>
                     </div>
 
+                    <!-- Replies to comment -->
                     <div class="media" v-for="reply in comment.replies.data">
+
+                        <!-- Channel image -->
                         <div class="media-left">
                             <a :href="channelUrl(reply)">
                                 <img v-bind:src="reply.channel.data.image" :alt="reply.channel.data.name" class="media-object">
                             </a>
                         </div>
+
+                        <!-- Reply body -->
                         <div class="media-body">
                             <a :href="channelUrl(reply)">{{ reply.channel.data.name }}</a> {{ reply.created_at_human }}
 
                             <p>{{ reply.body }}</p>
-                            <ul class="list-inline" v-if="comment.user_id === $root.user.id">
+
+                            <ul class="list-inline" v-if="$root.user.authenticated">
                                 <li>
                                     <a href="#" @click.prevent="deleteComment(reply.id)" v-if="reply.user_id === $root.user.id">
                                         <i class="glyphicon glyphicon-refresh spinning" v-if="deleting === reply.id"></i> Delete
@@ -135,6 +149,7 @@
                     this.comments.map((comment, index) => {
                         if (comment.id === commentId) {
                             this.comments[index].replies.data.push(response.data);
+                            return;
                         }
                     });
 

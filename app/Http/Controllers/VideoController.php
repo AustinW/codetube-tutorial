@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VideoCreateRequest;
 use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Http\Requests\VideoUpdateRequest;
@@ -45,7 +46,12 @@ class VideoController extends Controller
             return response()->json(null, 200);
         }
         
-        return redirect()->back();
+        return redirect()->back()->with([
+            'message' => [
+                'class' => 'success',
+                'body' => 'Video updated.',
+            ]
+        ]);
     }
     
     public function delete(Video $video) {
@@ -56,7 +62,7 @@ class VideoController extends Controller
         return redirect()->back();
     }
     
-    public function store(Request $request) {
+    public function store(VideoCreateRequest $request) {
         $uid = uniqid(true);
         
         $channel = $request->user()->channel()->first();

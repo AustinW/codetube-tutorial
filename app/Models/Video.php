@@ -33,8 +33,6 @@ class Video extends Model
         $properties = $this->toArray();
 
         $properties['visible'] = $this->isProcessed() && $this->isPublic();
-        $properties['hullo'] = true;
-        $properties['private'] = $this->isPrivate();
 
         return $properties;
     }
@@ -116,7 +114,7 @@ class Video extends Model
     }
 
     public function voteFromUser(User $user) {
-        return $this->votes()->where('user_id', $user->id);
+        return $this->votes->where('user_id', $user->id);
     }
 
     public function scopeProcessed($query) {

@@ -27,6 +27,10 @@
             }
         };
     </script>
+    
+    <style>
+        @yield('css')
+    </style>
 </head>
 <body>
     <div id="app">

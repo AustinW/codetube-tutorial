@@ -35,6 +35,11 @@ class ChannelSettingsController extends Controller
             $this->dispatch(new UploadImage($channel, $fileId));
         }
         
-        return redirect()->to("/channel/{$channel->slug}/edit");
+        return redirect()->to("/channel/{$channel->slug}/edit")->with([
+            'message' => [
+                'class' => 'success',
+                'body' => 'Channel updated.',
+            ]
+        ]);
     }
 }

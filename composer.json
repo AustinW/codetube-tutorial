@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "algolia/algoliasearch-client-php": "^1.13",
         "aws/aws-sdk-php": "^3.21",
+        "doctrine/dbal": "^2.5",
         "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/scout": "^3.0",

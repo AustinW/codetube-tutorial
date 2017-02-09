@@ -20,22 +20,25 @@
                                     </div>
                                     <div class="media-body">
                                         <a href="/channel/{{ $channel->slug }}" class="media-heading">{{ $channel->name }}</a>
-                                        <subscribe-button channel-slug="{{ $channel->slug }}"></subscribe-button>
+    
+                                        <ul class="list-inline">
+                                            <li>{{ $channel->subscriptionCount() }} {{ str_plural('subscriber', $channel->subscriptionCount()) }}</li>
+                                        </ul>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     @endif
-                        @foreach ($videos as $video)
-                            <div class="well">
-                                @include ('video.partials._video_result', ['video' => $video])
-                            </div>
-                        @endforeach
-                    @if ($videos->count())
-
-                    @else
+                    
+                    <h4>Videos</h4>
+                    
+                    @forelse ($videos as $video)
+                        <div class="well">
+                            @include ('video.partials._video_result', ['video' => $video])
+                        </div>
+                    @empty
                         <p>No videos found.</p>
-                    @endif
+                    @endforelse
                 </div>
             </div>
         </div>
