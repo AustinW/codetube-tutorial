@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Channel;
+
+class ChannelPolicy
+{
+    use HandlesAuthorization;
+
+    public function edit(User $user, Channel $channel) {
+        return $user->id === $channel->user_id;
+    }
+    
+    public function update(User $user, Channel $channel) {
+        return $user->id === $channel->user_id;
+    }
+
+    public function subscribe(User $user, Channel $channel) {
+        return !$user->ownsChannel($channel);
+    }
+    public function unsubscribe(User $user, Channel $channel) {
+        return $user->isSubscribedTo($channel);
+    }
+}
